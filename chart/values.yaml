@@ -1,0 +1,9 @@
+datahub:
+  enabled: false
+
+replicaCount: 1
+
+image:
+  repository: debian
+  pullPolicy: IfNotPresent
+  tag: "bookworm"

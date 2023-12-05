@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "foo.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "foo.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "foo.selectorLabels" . | nindent 10 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "bash", "-c", "tail -f /dev/null" ]
+          env:
+            {{- if .Values.datahub.enabled }}
+            - name: DATAHUB_REVISION
+              value: "FIRST"
+            {{- end }}
+            - name: SOMETHING_ELSE
+              value: "ELSE"
+            - name: DATAHUB_REVISION
+              value: "SECOND"
